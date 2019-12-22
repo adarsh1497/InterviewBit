@@ -19,7 +19,7 @@ import com.psych.game.modal.Player;
 import com.psych.game.repository.PlayerRepository;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/dev")
 public class PlayerController {
 
 	@Autowired
@@ -30,10 +30,7 @@ public class PlayerController {
 		return playerRepository.findAll();
 	}
 
-	@PostMapping("/players")
-	public Player createPlayer(@Valid @RequestBody Player player) {
-		return playerRepository.save(player);
-	}
+	
 
 	@GetMapping("players/{id}")
 	public Player getPlayerById(@PathVariable(value = "id") Long id) throws Exception {
@@ -41,7 +38,8 @@ public class PlayerController {
 	}
 
 	@PutMapping("players/{id}")
-	public Player updatePlayer(@PathVariable(value = "id") Long id, @Valid @RequestBody Player player) throws Exception {
+	public Player updatePlayer(@PathVariable(value = "id") Long id, @Valid @RequestBody Player player)
+			throws Exception {
 		Player p = playerRepository.findById(id).orElseThrow(() -> new Exception("Something went wrong"));
 		p.setName(player.getName());
 		return playerRepository.save(p);
@@ -52,7 +50,11 @@ public class PlayerController {
 		Player p = playerRepository.findById(id).orElseThrow(() -> new Exception("Something went wrong"));
 		playerRepository.delete(p);
 		return ResponseEntity.ok().build();
-
+	}
+	
+	@PostMapping("/players")
+	public Player createPlayer(@Valid @RequestBody Player player) {
+		return playerRepository.save(player);
 	}
 
 }
